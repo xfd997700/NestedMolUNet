@@ -10,7 +10,6 @@ import os
 from typing import Optional
 os.environ["BABEL_DATADIR"] = "C:\\Users\\USER\\anaconda3\\envs\\compe\\share\\openbabel"
 import pickle
-from openbabel import pybel
 import torch_geometric
 from torch_geometric.data import Data
 
@@ -80,7 +79,7 @@ def get_3d_conformer(mol: Chem.Mol, smiles, seed):
 def from_smiles(smiles: str, mol: Optional[Chem.rdchem.Mol] = None,
                 with_hydrogen: bool = False,
                 with_coordinate: bool = False, kekulize: bool = False,
-                use_OB: bool = False, seed: int = -1,
+                seed: int = -1,
                 get_fp: bool = True, ignore_frags=False) -> 'torch_geometric.data.Data':
     r"""Converts a SMILES string to a :class:`torch_geometric.data.Data`
     instance.
@@ -94,9 +93,6 @@ def from_smiles(smiles: str, mol: Optional[Chem.rdchem.Mol] = None,
             atom coordinate in the molecule graph as data.z. (default: :obj:`True`)
         kekulize (bool, optional): If set to :obj:`True`, converts aromatic
             bonds to single/double bonds. (default: :obj:`False`)
-        use_ob (bool, optional): If set to :obj:`True`, use openbabel to generate the 
-            3D conformer; else use rdkit (MOL gets the 2D conformer if failed to get 3D
-            conformer with rdkit). (default: :obj:`True`)   
         seed:int (int, optional): provide a seed for the random number generator 
             so that the same coordinates can be obtained for a molecule on multiple runs.
             (default: -1, the RNG will not seeded)
@@ -104,7 +100,6 @@ def from_smiles(smiles: str, mol: Optional[Chem.rdchem.Mol] = None,
     """
 
     RDLogger.DisableLog('rdApp.*')
-    pybel.ob.obErrorLog.StopLogging()
     
     if mol is None:
         mol = Chem.MolFromSmiles(smiles)
@@ -131,13 +126,8 @@ def from_smiles(smiles: str, mol: Optional[Chem.rdchem.Mol] = None,
         mol = Chem.AddHs(mol)
     
     if with_coordinate:
-        if use_OB:
-            smi = smiles_main if ignore_frags else smiles
-            mol2 = pybel.readstring("smi", smi)
-            mol2.make3D()
-            pos = [atom.coords for atom in mol2.atoms]
-        else:
-            pos = get_3d_conformer(mol, smiles, seed)
+        
+        pos = get_3d_conformer(mol, smiles, seed)
             # mol2 = Chem.AddHs(mol)
             # conf_num = AllChem.EmbedMolecule(mol2, randomSeed=seed)
             # if conf_num < 0:
