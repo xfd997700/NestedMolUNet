@@ -65,6 +65,7 @@ if __name__ == "__main__":
     parser.add_argument('--search_decay', type=parse_list, default=[0, 1e-4],
                         help='Search space for weight decay (default: [0, 1e-4])')
     parser.add_argument('--run_names', type=parse_list, default=None)
+    parser.add_argument('--log_dir', type=str, default='pt',)
     
     args = parser.parse_args()
         
@@ -81,7 +82,7 @@ if __name__ == "__main__":
     
     config = yaml.load(open('./config.yaml', 'r'), Loader=yaml.CLoader)
     device = torch.device('cuda:0') 
-    log_path = 'log/admet/pt/'
+    log_path = f'log/admet/{args.log_dir}/'
     os.makedirs(log_path, exist_ok=True)
     result_path = os.path.join(log_path, 'result.txt')
     
