@@ -4,7 +4,6 @@ Created on Wed Jun 19 13:25:13 2024
 
 @author: Fanding Xu
 """
-
 import os
 import time
 import torch
@@ -21,6 +20,15 @@ from trainer import PropertyTrainer
 from tdc import utils
 from tdc.benchmark_group import admet_group
 from tdc.multi_pred import DTI
+import ast
+
+def parse_list(arg):
+    try:
+        return ast.literal_eval(arg)
+    except (ValueError, SyntaxError):
+        raise argparse.ArgumentTypeError("Invalid list format. Use Python-style lists, e.g., '[1, 0]'.")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
@@ -47,15 +55,28 @@ if __name__ == "__main__":
                         help='minimum training epochs (default: 1)')
     parser.add_argument('--log_train_results', action="store_false",
                         help='whether to evaluate training set in each epoch, costs more time (default: False)')
-    args = parser.parse_args()
     
+    parser.add_argument('--search_pt', type=parse_list, default=[True, False],
+                        help='Search space for pretrained model usage (default: [True, False])')
+    parser.add_argument('--search_fp', type=parse_list, default=[True, False],
+                        help='Search space for fingerprint query (default: [True, False])')
+    parser.add_argument('--search_lr', type=parse_list, default=[1e-3, 1e-4],
+                        help='Search space for learning rates (default: [1e-3, 1e-4, 5e-5])')
+    parser.add_argument('--search_decay', type=parse_list, default=[0, 1e-4],
+                        help='Search space for weight decay (default: [0, 1e-4])')
+    parser.add_argument('--run_names', type=parse_list, default=None)
+    
+    args = parser.parse_args()
         
-#%%
-
+# %%
     data_root = 'dataset/data/admet/'
     os.makedirs(data_root, exist_ok=True)
     group = admet_group(path = data_root)
-    names = utils.retrieve_benchmark_names('ADMET_Group')
+    if args.run_names is not None:
+        names = args.run_names
+    else:
+        names = utils.retrieve_benchmark_names('ADMET_Group')   
+    # names = utils.retrieve_benchmark_names('ADMET_Group')
     predictions_list = []
     
     config = yaml.load(open('./config.yaml', 'r'), Loader=yaml.CLoader)
@@ -71,10 +92,10 @@ if __name__ == "__main__":
     # config['FP']['query_fp'] = True
     all_results = {}
     
-    search_pt = [True, False]
-    search_fp = [True, False]
-    search_lr = [1e-3, 1e-4, 5e-5]
-    search_decay = [0, 1e-4]
+    search_pt = args.search_pt
+    search_fp = args.search_fp
+    search_lr = args.search_lr
+    search_decay = args.search_decay
     
     
     for dataset in names:
@@ -89,6 +110,8 @@ if __name__ == "__main__":
                     for decay in search_decay:
                         args.decay = decay
                         
+                        batch_size = None
+
                         cur_list = []
                         args.dataset = dataset
                         id2mol_dict = get_mol_dict(group, dataset)
@@ -117,7 +140,7 @@ if __name__ == "__main__":
                                 valid['Y_scale'] = Y_scaler.transform(valid['Y'].values)
                                 test['Y_scale'] = Y_scaler.transform(test['Y'].values)
                    
-                            loader_tr, loader_va, loader_te = easy_loader(train, valid, test, id2mol_dict)
+                            loader_tr, loader_va, loader_te = easy_loader(train, valid, test, id2mol_dict, batch_size=batch_size)
                             print(f"\n\nRunning {dataset} seed {seed}")
                             print(f"Train: {len(loader_tr.dataset)} | Validation: {len(loader_va.dataset)} | Test: {len(loader_te.dataset)}\n\n")
                             set_seed(seed)
