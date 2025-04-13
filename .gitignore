@@ -2,5 +2,5 @@
 /log
 /*/__pycache__
 /dataset/data
-/dataset/descriptors
+/dataset/descriptors/__pycache__
 /__pycache__
