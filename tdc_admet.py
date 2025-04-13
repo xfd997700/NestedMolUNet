@@ -183,8 +183,10 @@ if __name__ == "__main__":
                                 print(text)
                             # --------------------------------------------- #
                             except: continue
-                        
-                        cur_result = group.evaluate_many(cur_list)      
+                        try:
+                            cur_result = group.evaluate_many(cur_list)  
+                        except:
+                            continue    
                         all_results.update(cur_result)
                         print('\n\n{}'.format(cur_result))
                         
