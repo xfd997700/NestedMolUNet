@@ -110,8 +110,6 @@ if __name__ == "__main__":
                     args.lr = lr
                     for decay in search_decay:
                         args.decay = decay
-                        
-                        batch_size = None
 
                         cur_list = []
                         args.dataset = dataset
@@ -140,7 +138,8 @@ if __name__ == "__main__":
                                 train['Y_scale'] = Y_scaler.transform(train['Y'].values)
                                 valid['Y_scale'] = Y_scaler.transform(valid['Y'].values)
                                 test['Y_scale'] = Y_scaler.transform(test['Y'].values)
-                   
+
+                            batch_size = args.batch_size
                             loader_tr, loader_va, loader_te = easy_loader(train, valid, test, id2mol_dict, batch_size=batch_size)
                             print(f"\n\nRunning {dataset} seed {seed}")
                             print(f"Train: {len(loader_tr.dataset)} | Validation: {len(loader_va.dataset)} | Test: {len(loader_te.dataset)}\n\n")
