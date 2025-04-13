@@ -84,8 +84,9 @@ if __name__ == "__main__":
     device = torch.device('cuda:0') 
     log_path = f'log/admet/{args.log_dir}/'
     os.makedirs(log_path, exist_ok=True)
+    os.makedirs('log/temp/', exist_ok=True)
     result_path = os.path.join(log_path, 'result.txt')
-    
+    temp_ckpt_path = os.path.join(log_path, f'admet_{args.run_name}.pt')
     
     config['FP']['in_dim'] = 200 # use desc as fp instead
     
@@ -157,7 +158,7 @@ if __name__ == "__main__":
                             # *****************************************************
                             
                             tr = PropertyTrainer(args, model, device, pretrained=False)
-                            info_dict = tr(loader_tr, loader_va, loader_te, tensorboard=False)
+                            info_dict = tr(loader_tr, loader_va, loader_te, tensorboard=False, save_path=temp_ckpt_path)
                             
                             loss.append(info_dict['loss'])
                             loss_np = np.array(loss);
