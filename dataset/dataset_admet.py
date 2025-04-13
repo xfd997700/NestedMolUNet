@@ -223,10 +223,10 @@ def easy_loader(train, valid, test, id2mol_dict,
                                 num_workers=num_workers)
     # TODO: 这里做了修改
     loader_va = admetDataLoader(admetDataset(valid, id2mol_dict['train_val']),
-                                batch_size=int(batch_size*2), shuffle=False, drop_last=False,
+                                batch_size=int(batch_size), shuffle=False, drop_last=False,
                                 num_workers=num_workers)
     loader_te = admetDataLoader(admetDataset(test, id2mol_dict['test']),
-                                batch_size=int(batch_size*2), shuffle=False, drop_last=False,
+                                batch_size=int(batch_size), shuffle=False, drop_last=False,
                                 num_workers=num_workers)
     return loader_tr, loader_va, loader_te
 

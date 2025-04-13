@@ -156,37 +156,36 @@ if __name__ == "__main__":
                                 model.unet.load_state_dict(torch.load(f'checkpoint/pretrain/{task_name}.pt'), strict=False)
                                 print("Pretrained unet loaded")
                             # *****************************************************
-                            try:
-                                tr = PropertyTrainer(args, model, device, pretrained=False)
-                                info_dict = tr(loader_tr, loader_va, loader_te, tensorboard=False)
+                            
+                            tr = PropertyTrainer(args, model, device, pretrained=False)
+                            info_dict = tr(loader_tr, loader_va, loader_te, tensorboard=False)
+                            
+                            loss.append(info_dict['loss'])
+                            loss_np = np.array(loss);
+                            print_info = ['loss: {:.4f} +/- {:.4f}\n'.format(loss_np.mean(), loss_np.std())]
+                            y_pred_test = tr.predict(loader_te)
+                            if args.log_scale:
+                                y_pred_test = Y_scaler.inverse_transform(y_pred_test)
                                 
-                                loss.append(info_dict['loss'])
-                                loss_np = np.array(loss);
-                                print_info = ['loss: {:.4f} +/- {:.4f}\n'.format(loss_np.mean(), loss_np.std())]
-                                y_pred_test = tr.predict(loader_te)
-                                if args.log_scale:
-                                    y_pred_test = Y_scaler.inverse_transform(y_pred_test)
-                                    
-                                # --------------------------------------------- #
-                                    
-                                predictions[name] = y_pred_test 
-                                cur_list.append(predictions)
-                                
-                                # ------------ info print per seed ------------ # 
-                                result = group.evaluate(predictions)
-                                result_k, result_v = next(iter(result[dataset].items()))
-                                metric.append(result_v)
-                                print_info += ['current {}: {:.4f}\n'.format(result_k, result_v)]
-                                metric_np = np.array(metric)
-                                print_info += ['{}: {:.4f} +/- {:.4f}\n'.format(result_k, metric_np.mean(), metric_np.std())]
-                                text = ''.join(print_info)
-                                print(text)
                             # --------------------------------------------- #
-                            except: continue
-                        try:
-                            cur_result = group.evaluate_many(cur_list)  
-                        except:
-                            continue    
+                                
+                            predictions[name] = y_pred_test 
+                            cur_list.append(predictions)
+                            
+                            # ------------ info print per seed ------------ # 
+                            result = group.evaluate(predictions)
+                            result_k, result_v = next(iter(result[dataset].items()))
+                            metric.append(result_v)
+                            print_info += ['current {}: {:.4f}\n'.format(result_k, result_v)]
+                            metric_np = np.array(metric)
+                            print_info += ['{}: {:.4f} +/- {:.4f}\n'.format(result_k, metric_np.mean(), metric_np.std())]
+                            text = ''.join(print_info)
+                            print(text)
+                            # --------------------------------------------- #
+                            
+                        
+                        cur_result = group.evaluate_many(cur_list)  
+                        
                         all_results.update(cur_result)
                         print('\n\n{}'.format(cur_result))
                         
