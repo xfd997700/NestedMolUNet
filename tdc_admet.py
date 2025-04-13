@@ -190,7 +190,7 @@ if __name__ == "__main__":
                         print('\n\n{}'.format(cur_result))
                         
                         d, r = next(iter(cur_result.items()))
-                        info_to_write = f"{d}\t{r[0]}\t{r[1]}\t{pt}\t{fp}\t{lr}\t{decay}"
+                        info_to_write = f"{d}\t{r[0]}\t{r[1]}\t{pt}\t{fp}\t{lr}\t{decay}\t{batch_size}"
                         
                         
                         with open(result_path, "a") as f:
