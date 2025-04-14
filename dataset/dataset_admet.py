@@ -228,7 +228,7 @@ def easy_loader(train, valid, test, id2mol_dict,
     loader_te = admetDataLoader(admetDataset(test, id2mol_dict['test']),
                                 batch_size=int(batch_size), shuffle=False, drop_last=False,
                                 num_workers=num_workers)
-    return loader_tr, loader_va, loader_te
+    return loader_tr, loader_va, loader_te, batch_size
 
 
 

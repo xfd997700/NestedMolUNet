@@ -141,7 +141,7 @@ if __name__ == "__main__":
                                 test['Y_scale'] = Y_scaler.transform(test['Y'].values)
 
                             batch_size = args.batch_size
-                            loader_tr, loader_va, loader_te = easy_loader(train, valid, test, id2mol_dict, batch_size=batch_size)
+                            loader_tr, loader_va, loader_te, cur_batch_size = easy_loader(train, valid, test, id2mol_dict, batch_size=batch_size)
                             print(f"\n\nRunning {dataset} seed {seed}")
                             print(f"Train: {len(loader_tr.dataset)} | Validation: {len(loader_va.dataset)} | Test: {len(loader_te.dataset)}\n\n")
                             set_seed(seed)
@@ -190,7 +190,7 @@ if __name__ == "__main__":
                         print('\n\n{}'.format(cur_result))
                         
                         d, r = next(iter(cur_result.items()))
-                        info_to_write = f"{d}\t{r[0]}\t{r[1]}\t{pt}\t{fp}\t{lr}\t{decay}\t{batch_size}"
+                        info_to_write = f"{d}\t{r[0]}\t{r[1]}\t{pt}\t{fp}\t{lr}\t{decay}\t{cur_batch_size}"
                         
                         
                         with open(result_path, "a") as f:
