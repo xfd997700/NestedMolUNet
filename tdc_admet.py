@@ -64,7 +64,7 @@ if __name__ == "__main__":
                         help='Search space for learning rates (default: [1e-3, 1e-4, 5e-5])')
     parser.add_argument('--search_decay', type=parse_list, default=[0, 1e-4],
                         help='Search space for weight decay (default: [0, 1e-4])')
-    parser.add_argument('--run_names', type=parse_list, default=None)
+    parser.add_argument('--run_names', type=parse_list, default='')
     parser.add_argument('--log_dir', type=str, default='pt',)
     
     args = parser.parse_args()
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     os.makedirs(log_path, exist_ok=True)
     os.makedirs('log/temp/', exist_ok=True)
     result_path = os.path.join(log_path, 'result.txt')
-    temp_ckpt_path = os.path.join(log_path, f'admet_{args.run_name}.pt')
+    temp_ckpt_path = os.path.join(log_path, 'model.pt')
     
     config['FP']['in_dim'] = 200 # use desc as fp instead
     
