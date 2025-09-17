@@ -177,13 +177,13 @@ def get_dataset_info(dataset):
 
 #%%
 if __name__ == "__main__":
-    # for dataset in tasks.keys():
-    #     if dataset not in ['PCBA', 'HIV', 'muv', 'Mutagenicity']:
-    #         data_list = generate_data_list(dataset)
-    #         torch.save(data_list, f'data/property/processed/{dataset}.pth')
+    for dataset in tasks.keys():
+        if dataset not in ['PCBA', 'HIV', 'muv', 'Mutagenicity']:
+            data_list = generate_data_list(dataset)
+            torch.save(data_list, f'data/property/processed/{dataset}.pth')
             
-    data_list = generate_data_list('ld50')
-    torch.save(data_list, 'data/property/processed/ld50.pth')
+    # data_list = generate_data_list('ld50')
+    # torch.save(data_list, 'data/property/processed/ld50.pth')
 
 
 
