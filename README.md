@@ -2,8 +2,6 @@
 
 **MolUNet++** is a novel graph neural network that introduces nested U-Net architecture for molecular representation learning. Our approach combines hierarchical graph pooling with skip connections to capture multi-scale molecular features, enabling superior performance across diverse drug discovery tasks including molecular property prediction, drug-target interaction, and drug-drug interaction prediction.
 
-The key innovation lies in the nested U-Net design that preserves both local atomic details and global molecular structure through hierarchical encoding-decoding processes. This architecture, coupled with a two-stage pre-training framework and molecular fingerprint integration, achieves state-of-the-art results on standard benchmarks while providing interpretable molecular substructure analysis.
-
 ## Table of Contents
 
 - [Installation](#installation)
