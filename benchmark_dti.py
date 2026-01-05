@@ -43,7 +43,7 @@ if __name__ == "__main__":
     
 #%%
     os.makedirs('checkpoint/DTI/', exist_ok=True)
-    os.makedirs('log/DTI/', exist_ok=True)
+    os.makedirs('log/DTI/detail', exist_ok=True)
     args.min_epochs = 1
     args.patience = 30
     args.lr = 5e-5
@@ -69,7 +69,7 @@ if __name__ == "__main__":
         model = UnetDTI(config)
 
         
-        device = torch.device('cuda:0') 
+        device = torch.device('cuda:1') 
         tr = DTITrainer(args, model, device)
         info_dict = tr(loader_tr, loader_va, loader_te, tensorboard=False, save_path=f'checkpoint/DTI/{args.dataset}.pt')
         

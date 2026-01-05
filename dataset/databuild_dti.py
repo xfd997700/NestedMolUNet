@@ -223,8 +223,8 @@ class BenchmarkDataset(Dataset):
 def get_benchmark_loader(task='bindingdb', split='random',
                          batch_size=64, seed=114514, num_workers=0):
     root = f'dataset/data/DTI/{task}/{split}'
-    drug_dict = torch.load(f'dataset/data/DTI/{task}/drugs.pth')
-    prot_dict = torch.load(f'dataset/data/DTI/{task}/protein.pth')                     
+    drug_dict = torch.load(f'dataset/data/DTI/{task}/drugs.pth', weights_only=False)
+    prot_dict = torch.load(f'dataset/data/DTI/{task}/protein.pth', weights_only=False)                     
     train_dataset = BenchmarkDataset(os.path.join(root, 'train.csv'), drug_dict, prot_dict)
     test_dataset = BenchmarkDataset(os.path.join(root, 'test.csv'), drug_dict, prot_dict)
     val_dataset = BenchmarkDataset(os.path.join(root, 'val.csv'), drug_dict, prot_dict)

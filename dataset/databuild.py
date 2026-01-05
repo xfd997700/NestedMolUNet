@@ -9,6 +9,7 @@ import torch
 import os
 from typing import Optional
 os.environ["BABEL_DATADIR"] = "C:\\Users\\USER\\anaconda3\\envs\\compe\\share\\openbabel"
+# replace the path with your openbabel installation path
 import pickle
 import torch_geometric
 from torch_geometric.data import Data
