@@ -5,3 +5,12 @@
 /dataset/descriptors/__pycache__
 /__pycache__
 *.pyc
+*.png
+/results
+/temp
+/visual_demo
+*.ipynb
+just_try.py
+custom_dti.py
+hits*
+*.TTF

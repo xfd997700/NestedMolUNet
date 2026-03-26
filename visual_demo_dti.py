@@ -48,7 +48,7 @@ config['model']['hidden_dim'] = 128
 config['deg'] = torch.tensor([   68, 23804, 49733, 32711,  2724,     3,     3])
 
 model = UnetDTI(config).to(device)
-model.load_state_dict(torch.load('checkpoint/DTI/bindingdb.pt'))
+model.load_state_dict(torch.load('checkpoint/DTI/glass.pt'))
 
 name = args.name
 
@@ -133,7 +133,7 @@ attribution = np.tanh(attribution)
 
 
 def get_mol_img(mol, size=(400, 400)):
-    img = Draw.MolToImage(mol, size=size, kekulize=True, options=Draw.DrawingOptions())
+    img = Draw.MolToImage(mol, size=size, kekulize=True)
     img = img.convert("RGBA")
     datas = img.getdata()
     new_data = []

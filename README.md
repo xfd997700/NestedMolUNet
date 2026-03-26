@@ -334,12 +334,12 @@ If you use this code in your research, please cite our paper:
 
 ```bibtex
 @article{xu2025molunet++,
-  title={MolUNet++: Adaptive-grained Explicit Substructure and Interaction Aware Molecular Representation Learning},
-  author={Xu, Fanding and Yang, Zhiwe and Su, Wu and Wang, Lizhuo and Meng, Deyu and Long, Jiangang},
-  journal={bioRxiv},
-  pages={2025--07},
+  title={MolUNet++: Adaptive-grained explicit substructure and interaction aware molecular representation learning},
+  author={Xu, Fanding and Yang, Zhiwei and Wu, Sirui and Su, Wu and Wang, Lizhuo and Meng, Deyu and Long, Jiangang},
+  journal={Acta Physico-Chimica Sinica},
+  pages={100209},
   year={2025},
-  publisher={Cold Spring Harbor Laboratory}
+  publisher={Elsevier}
 }
 ```
 
